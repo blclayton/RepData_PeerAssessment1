@@ -17,7 +17,7 @@ This report is an analysis of data from a personal activity monitoring device.
 Data was collected at 5 minute intervals through out the day. The data consists 
 of two months of data from an anonymous individual collected during the months 
 of October and November, 2012 and include the number of steps taken in 5 minute 
-intervals each day.is some text.  The report answers the quesitons:
+intervals each day. This report answers the questions:
 
 1. what is the mean total number of steps taken per day?
 2. what is the average daily activity pattern?
@@ -52,10 +52,10 @@ Steps.Per.Day.Exclude.NA <- Steps.Per.Day.Exclude.NA[,list(steps=sum(steps)), by
 
 ```
 
-**Create Histogram of total steps per day over October and November**
+**Create Histogram with line for median of total steps per day over October and November**
 
 ```{r}
-hist(Steps.Per.Day.Exclude.NA$steps, col= "steelblue", breaks = 10)
+hist(Steps.Per.Day.Exclude.NA$steps, col= "steelblue", breaks = 10, main = "Histogram of Total Steps Per Day", xlab = "Steps Per Day (exclude NA values)")
 rug(Steps.Per.Day.Exclude.NA$steps)
 abline( v = median(Steps.Per.Day.Exclude.NA$steps), col = "magenta", lwd = 4)
 
@@ -135,7 +135,7 @@ Steps.Per.Day.Impute.NA <- Steps.Per.Day.Impute.NA[,list(steps=sum(steps)), by='
 - histogram of total steps taken with imputed values for NA
 ```{r}
 ##All.Steps.Per.Day <- with(allData, tapply(X = steps, INDEX = date, FUN = sum)) 
-hist(Steps.Per.Day.Impute.NA$steps, col= "steelblue", breaks = 10)
+hist(Steps.Per.Day.Impute.NA$steps, col= "steelblue", breaks = 10, main = "Histogram of Steps Per Day with Imputed Values for NAs", xlab = "Steps Per Day with Imputed Value for NA's")
 rug(Steps.Per.Day.Impute.NA$steps)
 abline( v = median(Steps.Per.Day.Impute.NA$steps), col = "magenta", lwd = 4)
 ```
@@ -150,20 +150,20 @@ The values of total steps mean and median when using imputed values for NA value
 
 - Mean with imputed NA:    **`r meanallsteps`**   
 
-- Mean excluding NA:   **`r meansteps`**
+- Mean excluding NA:       **`r meansteps`**
 
 - Median with imputed NA:  **`r medianallsteps`** 
 
-- Median excluding NA: **`r mediansteps`**
+- Median excluding NA:     **`r mediansteps`**
 
 
 ####Here are the histagrams of each side by side:
 
 ```{r}
 par( mfrow = c( 2, 1), mar = c( 4, 4, 2, 1))
-hist(Steps.Per.Day.Exclude.NA$steps, col= "steelblue", breaks = 10)
+hist(Steps.Per.Day.Exclude.NA$steps, col= "steelblue", breaks = 10, main = "Histogram of Steps per Day Excluding NA", xlab = "Steps Per Day (exclude NA values)")
 abline( v = median(Steps.Per.Day.Exclude.NA$steps), col = "magenta", lwd = 4)
-hist(Steps.Per.Day.Impute.NA$steps, col= "steelblue", breaks = 10) 
+hist(Steps.Per.Day.Impute.NA$steps, col= "steelblue", breaks = 10, main = "Histogram of Steps Per Day with Imputed Values for NAs", xlab = "Steps Per Day (imputed value for NA's)") 
 abline( v = median(Steps.Per.Day.Impute.NA$steps), col = "magenta", lwd = 4)
 ```
 

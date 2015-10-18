@@ -1,3 +1,8 @@
+---
+output: 
+  html_document: 
+    keep_md: yes
+---
 
 Reproducible Research Assignment 1
 ===================================
@@ -12,7 +17,7 @@ This report is an analysis of data from a personal activity monitoring device.
 Data was collected at 5 minute intervals through out the day. The data consists 
 of two months of data from an anonymous individual collected during the months 
 of October and November, 2012 and include the number of steps taken in 5 minute 
-intervals each day.is some text.  The report answers the quesitons:
+intervals each day. This report answers the questions:
 
 1. what is the mean total number of steps taken per day?
 2. what is the average daily activity pattern?
@@ -23,49 +28,9 @@ intervals each day.is some text.  The report answers the quesitons:
 
 ```r
 library(dplyr)
-```
-
-```
-## 
-## Attaching package: 'dplyr'
-## 
-## The following objects are masked from 'package:stats':
-## 
-##     filter, lag
-## 
-## The following objects are masked from 'package:base':
-## 
-##     intersect, setdiff, setequal, union
-```
-
-```r
 library(data.table)
-```
-
-```
-## 
-## Attaching package: 'data.table'
-## 
-## The following objects are masked from 'package:dplyr':
-## 
-##     between, last
-```
-
-```r
 library(ggplot2)
 library(reshape2)
-```
-
-```
-## 
-## Attaching package: 'reshape2'
-## 
-## The following objects are masked from 'package:data.table':
-## 
-##     dcast, melt
-```
-
-```r
 library(lattice)
 ```
 
@@ -89,16 +54,16 @@ Steps.Per.Day.Exclude.NA<- data.table(nnData)
 Steps.Per.Day.Exclude.NA <- Steps.Per.Day.Exclude.NA[,list(steps=sum(steps)), by='date']
 ```
 
-**Create Histogram of total steps per day over October and November**
+**Create Histogram with line for median of total steps per day over October and November**
 
 
 ```r
-hist(Steps.Per.Day.Exclude.NA$steps, col= "steelblue", breaks = 10)
+hist(Steps.Per.Day.Exclude.NA$steps, col= "steelblue", breaks = 10, main = "Histogram of Total Steps Per Day", xlab = "Steps Per Day (exclude NA values)")
 rug(Steps.Per.Day.Exclude.NA$steps)
 abline( v = median(Steps.Per.Day.Exclude.NA$steps), col = "magenta", lwd = 4)
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-4-1.png) 
+![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4-1.png) 
 
 **Calculate mean and median total number of steps taken per day**
 
@@ -134,7 +99,7 @@ with(plotavgsteps, plot(interval,avg.steps,
 title("Time Series of Average Steps Oct 2012 - Nov 2012", cex=0.8, col.main = "steelblue")
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-7-1.png) 
+![plot of chunk unnamed-chunk-7](figure/unnamed-chunk-7-1.png) 
 
 ####Which 5-minute interval has the max number of steps?
 - The 5 minute interval which has the maximum number of steps is **835**  
@@ -184,12 +149,12 @@ Steps.Per.Day.Impute.NA <- Steps.Per.Day.Impute.NA[,list(steps=sum(steps)), by='
 
 ```r
 ##All.Steps.Per.Day <- with(allData, tapply(X = steps, INDEX = date, FUN = sum)) 
-hist(Steps.Per.Day.Impute.NA$steps, col= "steelblue", breaks = 10)
+hist(Steps.Per.Day.Impute.NA$steps, col= "steelblue", breaks = 10, main = "Histogram of Steps Per Day with Imputed Values for NAs", xlab = "Steps Per Day with Imputed Value for NA's")
 rug(Steps.Per.Day.Impute.NA$steps)
 abline( v = median(Steps.Per.Day.Impute.NA$steps), col = "magenta", lwd = 4)
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-12-1.png) 
+![plot of chunk unnamed-chunk-12](figure/unnamed-chunk-12-1.png) 
 
 - Calculate and report the mean and median total number of steps taken per day. 
 
@@ -202,11 +167,11 @@ The values of total steps mean and median when using imputed values for NA value
 
 - Mean with imputed NA:    **10766**   
 
-- Mean excluding NA:   **10766**
+- Mean excluding NA:       **10766**
 
 - Median with imputed NA:  **10766** 
 
-- Median excluding NA: **10765**
+- Median excluding NA:     **10765**
 
 
 ####Here are the histagrams of each side by side:
@@ -214,13 +179,13 @@ The values of total steps mean and median when using imputed values for NA value
 
 ```r
 par( mfrow = c( 2, 1), mar = c( 4, 4, 2, 1))
-hist(Steps.Per.Day.Exclude.NA$steps, col= "steelblue", breaks = 10)
+hist(Steps.Per.Day.Exclude.NA$steps, col= "steelblue", breaks = 10, main = "Histogram of Steps per Day Excluding NA", xlab = "Steps Per Day (exclude NA values)")
 abline( v = median(Steps.Per.Day.Exclude.NA$steps), col = "magenta", lwd = 4)
-hist(Steps.Per.Day.Impute.NA$steps, col= "steelblue", breaks = 10) 
+hist(Steps.Per.Day.Impute.NA$steps, col= "steelblue", breaks = 10, main = "Histogram of Steps Per Day with Imputed Values for NAs", xlab = "Steps Per Day (imputed value for NA's)") 
 abline( v = median(Steps.Per.Day.Impute.NA$steps), col = "magenta", lwd = 4)
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-14-1.png) 
+![plot of chunk unnamed-chunk-14](figure/unnamed-chunk-14-1.png) 
 
 ####Are there differences in activity patterns between weekdays and weekends?
 
@@ -254,7 +219,7 @@ g <- ggplot(patternAvgSteps.melt, aes(interval, avgSteps))
 g + geom_line(color = "blue") + facet_grid(weekpart~.) + labs (title = "Average Steps Across Days") + labs (x = "Interval", y = "Number of Steps") + theme_bw()
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-17-1.png) 
+![plot of chunk unnamed-chunk-17](figure/unnamed-chunk-17-1.png) 
 
 
 
@@ -265,7 +230,7 @@ g + geom_line(color = "blue") + facet_grid(weekpart~.) + labs (title = "Average 
 xyplot(avgSteps ~ interval|weekpart, data = patternAvgSteps.melt, type = "l", layout=c(1,2), as.table=TRUE, xlab = "Interval", ylab = "Number of Steps", main="Average Steps Across Days")
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-18-1.png) 
+![plot of chunk unnamed-chunk-18](figure/unnamed-chunk-18-1.png) 
 
 
 ####Including session info for reproducibility
@@ -286,16 +251,19 @@ sessionInfo()
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] lattice_0.20-33  reshape2_1.4.1   ggplot2_1.0.1    data.table_1.9.6
-## [5] dplyr_0.4.3     
+## [1] knitr_1.11       xtable_1.7-4     lattice_0.20-33  ggplot2_1.0.1   
+## [5] reshape2_1.4.1   data.table_1.9.6 dplyr_0.4.3     
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] Rcpp_0.12.1      knitr_1.11       magrittr_1.5     MASS_7.3-44     
-##  [5] munsell_0.4.2    colorspace_1.2-6 R6_2.1.1         stringr_1.0.0   
-##  [9] plyr_1.8.3       tools_3.2.1      parallel_3.2.1   grid_3.2.1      
-## [13] gtable_0.1.2     DBI_0.3.1        htmltools_0.2.6  lazyeval_0.1.10 
-## [17] yaml_2.1.13      assertthat_0.1   digest_0.6.8     formatR_1.2.1   
-## [21] evaluate_0.8     rmarkdown_0.8    labeling_0.3     stringi_0.5-5   
-## [25] scales_0.3.0     chron_2.3-47     proto_0.3-10
+##  [1] Rcpp_0.12.1       magrittr_1.5      MASS_7.3-44      
+##  [4] munsell_0.4.2     colorspace_1.2-6  R6_2.1.1         
+##  [7] highr_0.5.1       stringr_1.0.0     plyr_1.8.3       
+## [10] tools_3.2.1       parallel_3.2.1    grid_3.2.1       
+## [13] gtable_0.1.2      DBI_0.3.1         htmltools_0.2.6  
+## [16] yaml_2.1.13       lazyeval_0.1.10   assertthat_0.1   
+## [19] digest_0.6.8      formatR_1.2.1     rsconnect_0.4.1.4
+## [22] evaluate_0.8      rmarkdown_0.8     labeling_0.3     
+## [25] stringi_0.5-5     scales_0.3.0      chron_2.3-47     
+## [28] proto_0.3-10
 ```
 
